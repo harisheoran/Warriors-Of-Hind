@@ -1,6 +1,12 @@
 package com.example.warriorsofhind.screens
 
+import android.annotation.SuppressLint
+import androidx.annotation.RawRes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,14 +16,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.warriorsofhind.R
+import com.example.warriorsofhind.components.UiStatus
 import com.example.warriorsofhind.models.WarriorsItem
 import com.example.warriorsofhind.network.NetworkStatusWrapper
 import com.example.warriorsofhind.viewmodel.WarriorsDataViewModel
 
+@SuppressLint("SupportAnnotationUsage")
 @Composable
 fun DetailsMainScreen() {
     val viewModel: WarriorsDataViewModel = hiltViewModel()
@@ -29,23 +39,26 @@ fun DetailsMainScreen() {
         }
 
         is NetworkStatusWrapper.Loading<*> -> {
-            ShowLoading(loading = "Loading...")
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.TopCenter
+
+            ) {
+
+                UiStatus(lottieFile = R.raw.loading_ui2)
+
+            }
         }
 
         else -> {
-            ShowError(error = "Error 404")
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                UiStatus(lottieFile = R.raw.server_error)
+            }
         }
     }
-}
-
-@Composable
-fun ShowLoading(loading: String) {
-    Text(text = loading)
-}
-
-@Composable
-fun ShowError(error: String) {
-    Text(text = error)
 }
 
 @Composable
@@ -77,5 +90,4 @@ fun DetailsCard(data: String) {
             )
         }
     )
-
 }

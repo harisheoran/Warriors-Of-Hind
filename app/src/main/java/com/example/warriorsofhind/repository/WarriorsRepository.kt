@@ -48,10 +48,10 @@ class WarriorsRepository @Inject constructor(private val warriorService: Warrior
             } else if (request.errorBody() != null) {
                 _warriorsList.postValue(NetworkStatusWrapper.Failure("Error"))
             } else {
-                _warriorsList.postValue(NetworkStatusWrapper.Failure("Erroor"))
+                _warriorsList.postValue(NetworkStatusWrapper.Failure("Error"))
             }
         }catch (e:Exception){
-            _warriorsList.postValue(NetworkStatusWrapper.Failure("Erroor"))
+            _warriorsList.postValue(NetworkStatusWrapper.Failure("Error"))
         }
     }
 }
