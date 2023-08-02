@@ -1,42 +1,28 @@
 package com.example.warriorsofhind
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.warriorsofhind.components.MyAppBar
-import com.example.warriorsofhind.network.WarriorService
-import com.example.warriorsofhind.screens.DetailsCard
 import com.example.warriorsofhind.screens.DetailsMainScreen
-import com.example.warriorsofhind.screens.DetailsScreen
 import com.example.warriorsofhind.screens.HomeScreen
 import com.example.warriorsofhind.ui.theme.WarriorsOfHindTheme
+import com.example.warriorsofhind.utils.Destinations
+import com.example.warriorsofhind.utils.Details
+import com.example.warriorsofhind.utils.Home
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -49,56 +35,55 @@ class MainActivity : ComponentActivity() {
             WarriorsOfHindTheme {
                 Surface(
                     color = MaterialTheme.colorScheme.surface,
-
-                    ) {
-                    val navController = rememberNavController()
-                    //  val backStackEntry by navController.currentBackStackEntryAsState()
-                    val canNavigateUp: Boolean = navController.previousBackStackEntry != null
-                    Scaffold(
-                        topBar = {
-                            MyAppBar(
-                                canNavigateUp = canNavigateUp,
-                                navigateUp = { navController.navigateUp() }
-                            )
-                        }
-                    ) {
-                        MyApp(modifier = Modifier.padding(it), navController = navController)
-                    }
+                ) {
+                    MyApp()
                 }
             }
         }
-
     }
 }
 
+enum class LunchTrayScreen(val title: String) {
+    Start(title = "Home"),
+    Entree(title = "Jassa"),
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyApp(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
 ) {
+    val navController = rememberNavController()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = backStackEntry?.arguments?.getString("kingName") ?: Home.label
 
-    NavHost(
-        navController = navController,
-        startDestination = "home",
-        modifier = modifier
+    Scaffold(
+        topBar = {
+            MyAppBar(
+                currentScreen = currentScreen,
+                canNavigateUp = navController.previousBackStackEntry != null
+            ) { navController.navigateUp() }
+        }
     ) {
-        composable(route = "home") {
-            HomeScreen() { args ->
-                navController.navigate("details/${args}") {
-                    launchSingleTop = true
+        NavHost(
+            navController = navController,
+            startDestination = Home.route,
+            modifier = modifier.padding(it)
+        ) {
+            composable(route = Home.route) {
+                HomeScreen() { arg ->
+                    navController.navigate("${Details.route}/$arg") {
+                        launchSingleTop = true
+                    }
                 }
             }
-        }
 
-        composable(
-            route = "details/{kingName}",
-            arguments = listOf(
-                navArgument(name = "kingName") {
-                    type = NavType.StringType
-                }
-            )
-        ) {
-            DetailsMainScreen()
+            composable(
+                route = Details.argWithRoute,
+                arguments = Details.argument
+            ) {
+                DetailsMainScreen()
+            }
         }
     }
 }

@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -45,6 +47,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.warriorsofhind.R
+import com.example.warriorsofhind.components.UiStatus
 import com.example.warriorsofhind.models.King
 import com.example.warriorsofhind.network.NetworkStatusWrapper
 import com.example.warriorsofhind.viewmodel.WarriorsNameViewModel
@@ -60,11 +63,21 @@ fun HomeScreen(onClick: (args: String) -> Unit) {
         }
 
         is NetworkStatusWrapper.Loading<*> -> {
-            ShowLoading(loading = "Loading...")
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                UiStatus(R.raw.loading)
+            }
         }
 
         else -> {
-            ShowError(error = "Errror 404")
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                UiStatus(R.raw.server_error)
+            }
         }
     }
 }
@@ -122,6 +135,7 @@ fun HomeCardImage(imgUrl: String) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(imgUrl)
+            .error(R.drawable.error_img)
             .build(),
         modifier = Modifier
             .width(250.dp)
@@ -129,11 +143,5 @@ fun HomeCardImage(imgUrl: String) {
         contentScale = ContentScale.Crop,
         contentDescription = "This is an example image"
     )
-}
-
-@Preview
-@Composable
-fun previewHomeCard() {
-    HomeCard(name = "Surjmal", img = "", onClick = {})
 }
 
