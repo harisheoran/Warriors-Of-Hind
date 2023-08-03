@@ -5,22 +5,24 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.warriorsofhind.components.BottomBar
 import com.example.warriorsofhind.components.MyAppBar
 import com.example.warriorsofhind.screens.DetailsMainScreen
+import com.example.warriorsofhind.screens.FavouriteScreen
 import com.example.warriorsofhind.screens.HomeScreen
 import com.example.warriorsofhind.ui.theme.WarriorsOfHindTheme
-import com.example.warriorsofhind.utils.Destinations
 import com.example.warriorsofhind.utils.Details
+import com.example.warriorsofhind.utils.Favourites
 import com.example.warriorsofhind.utils.Home
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,7 +36,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             WarriorsOfHindTheme {
                 Surface(
-                    color = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 5.dp,
                 ) {
                     MyApp()
                 }
@@ -63,6 +65,11 @@ fun MyApp(
                 currentScreen = currentScreen,
                 canNavigateUp = navController.previousBackStackEntry != null
             ) { navController.navigateUp() }
+        },
+        bottomBar = {
+            BottomBar(onClick = {
+                navController.navigate(route = Favourites.route)
+            })
         }
     ) {
         NavHost(
@@ -83,6 +90,12 @@ fun MyApp(
                 arguments = Details.argument
             ) {
                 DetailsMainScreen()
+            }
+
+            composable(route = Favourites.route) {
+                FavouriteScreen(
+                    onClick = {}
+                )
             }
         }
     }

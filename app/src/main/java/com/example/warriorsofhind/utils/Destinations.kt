@@ -1,11 +1,7 @@
 package com.example.warriorsofhind.utils
 
-import androidx.annotation.StringRes
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.warriorsofhind.R
-import com.example.warriorsofhind.utils.Details.route
 
 enum class Destinat() {
 
@@ -36,10 +32,16 @@ object Details : Destinations {
 
     val argWithRoute = "${route}/{${arg}}"
 
-
     val argument = listOf(
         navArgument(name = Details.arg) {
             type = NavType.StringType
         }
     )
+}
+
+object Favourites: Destinations{
+    override val route: String
+        get() = "favourites"
+
+    val label: String = "Favourites"
 }
