@@ -10,6 +10,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun BottomBar(modifier: Modifier = Modifier, onClick: () -> Unit) {
@@ -22,7 +23,11 @@ fun BottomBar(modifier: Modifier = Modifier, onClick: () -> Unit) {
             IconButton(onClick = {
                 onClick()
             }) {
-                Icon(Icons.Filled.Favorite, contentDescription = null)
+                Icon(
+                    Icons.Filled.Favorite,
+                    contentDescription = null,
+                    tint = Color.Red
+                )
             }
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(Icons.Filled.Share, contentDescription = null)

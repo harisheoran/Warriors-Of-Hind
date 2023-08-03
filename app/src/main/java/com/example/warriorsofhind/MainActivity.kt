@@ -94,7 +94,9 @@ fun MyApp(
 
             composable(route = Favourites.route) {
                 FavouriteScreen(
-                    onClick = {}
+                    onClick = {arg ->
+                        navController.navigate("${Details.route}/$arg")
+                    }
                 )
             }
         }

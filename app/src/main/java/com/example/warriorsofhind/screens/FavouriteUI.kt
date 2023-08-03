@@ -14,7 +14,7 @@ import com.example.warriorsofhind.components.HomeCard
 import com.example.warriorsofhind.viewmodel.WarriorsNameViewModel
 
 @Composable
-fun FavouriteScreen(modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun FavouriteScreen(modifier: Modifier = Modifier, onClick: (arg: String) -> Unit) {
     val viewModel: WarriorsNameViewModel = hiltViewModel()
     val favouritesState = viewModel.favourites.observeAsState()
 
@@ -31,10 +31,10 @@ fun FavouriteScreen(modifier: Modifier = Modifier, onClick: () -> Unit) {
         //verticalArrangement = Arrangement.SpaceAround,
     ) {
         val favouriteList = favouritesState.value ?: emptyList()
-        items(favouriteList) {
+        items(favouriteList) { king ->
             HomeCard(
-                king = it,
-                onClick = {},
+                king = king,
+                onClick = { onClick(king.name) },
                 onClickFavourite = {}
             )
         }
