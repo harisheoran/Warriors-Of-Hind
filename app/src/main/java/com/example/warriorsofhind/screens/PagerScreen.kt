@@ -2,6 +2,7 @@ package com.example.warriorsofhind.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -48,7 +50,7 @@ import com.tbuonomo.viewpagerdotsindicator.compose.type.ShiftIndicatorType
 import kotlinx.coroutines.launch
 
 @Composable
-fun PagerScreen(modifier: Modifier = Modifier) {
+fun PagerScreen(modifier: Modifier = Modifier, onClick: (arg: String) -> Unit) {
     val viewModel: WarriorsNameViewModel = hiltViewModel()
     val responseState = viewModel.warriorsNameListState.observeAsState()
 
@@ -57,7 +59,7 @@ fun PagerScreen(modifier: Modifier = Modifier) {
         is NetworkStatusWrapper.Success<*> -> {
             val kingList = responseState.value?.data
             if (kingList != null) {
-                PagerUI(kingList)
+                PagerUI(kingList, onClick = onClick)
             }
         }
 
@@ -84,7 +86,7 @@ fun PagerScreen(modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PagerUI(kingList: List<King>) {
+fun PagerUI(kingList: List<King>, onClick: (arg: String) -> Unit) {
     val pagerState = rememberPagerState(initialPage = 0, initialPageOffsetFraction = .25f)
 
     var pageCount by remember { mutableStateOf(kingList.size) }
@@ -103,14 +105,23 @@ fun PagerUI(kingList: List<King>) {
                 pageCount = pageCount,
                 modifier = Modifier.fillMaxSize()
             ) { currentPage ->
-                Box(modifier = Modifier.fillMaxSize()) {
+                Box(modifier = Modifier.fillMaxSize().clickable {
+                    onClick(kingList[currentPage].name)
+                }) {
                     PagerUIImage(imgUrl = kingList[currentPage].img)
                     Text(
                         text = kingList[currentPage].name,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = Color.White,
                         modifier = Modifier
                             .align(Alignment.BottomStart)
-                            .background(color = Color.LightGray)
+                            .background(Color.Black.copy(alpha = 0.5f))
+                            .padding(start = 8.dp, bottom = 8.dp)
+                            .fillMaxWidth()
+
                     )
                 }
             }

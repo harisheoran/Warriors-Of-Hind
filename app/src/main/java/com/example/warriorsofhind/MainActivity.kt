@@ -70,7 +70,7 @@ fun MyApp(
         },
         bottomBar = {
             BottomBar(
-                onClick = {arg ->
+                onClick = { arg ->
                     navController.navigate(arg)
                 }
             )
@@ -105,7 +105,11 @@ fun MyApp(
             }
 
             composable(route = Pager.route) {
-                PagerScreen()
+                PagerScreen(
+                    onClick = { arg ->
+                        navController.navigate("${Details.route}/$arg")
+                    }
+                )
             }
         }
 
