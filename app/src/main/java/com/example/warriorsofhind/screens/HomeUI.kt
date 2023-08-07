@@ -8,7 +8,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,6 +28,10 @@ import com.example.warriorsofhind.viewmodel.WarriorsNameViewModel
 fun HomeScreen(onClick: (args: String) -> Unit) {
     val viewModel: WarriorsNameViewModel = hiltViewModel()
     val names = viewModel.warriorsNameListState.observeAsState()
+
+    var selected by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     when (val namesList = names.value) {
         is NetworkStatusWrapper.Success<*> -> {

@@ -8,5 +8,6 @@ data class FavouriteEntity(
     @PrimaryKey(autoGenerate = true)
     val Id: Int = 0,
     val name: String,
-    val img: String
+    val img: String,
+    val isFavourite: Boolean
 )

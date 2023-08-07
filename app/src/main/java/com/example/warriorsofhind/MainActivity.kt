@@ -67,9 +67,11 @@ fun MyApp(
             ) { navController.navigateUp() }
         },
         bottomBar = {
-            BottomBar(onClick = {
-                navController.navigate(route = Favourites.route)
-            })
+            BottomBar(
+                onClick = {
+                    navController.navigate(route = Favourites.route)
+                }
+            )
         }
     ) {
         NavHost(
@@ -94,7 +96,7 @@ fun MyApp(
 
             composable(route = Favourites.route) {
                 FavouriteScreen(
-                    onClick = {arg ->
+                    onClick = { arg ->
                         navController.navigate("${Details.route}/$arg")
                     }
                 )
