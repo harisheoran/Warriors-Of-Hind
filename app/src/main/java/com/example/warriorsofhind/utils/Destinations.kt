@@ -45,3 +45,11 @@ object Favourites: Destinations{
 
     val label: String = "Favourites"
 }
+
+object Pager: Destinations{
+    override val route: String
+        get() = "pager"
+
+    val label: String = "Pager"
+
+}

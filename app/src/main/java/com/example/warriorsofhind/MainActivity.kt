@@ -20,10 +20,12 @@ import com.example.warriorsofhind.components.MyAppBar
 import com.example.warriorsofhind.screens.DetailsMainScreen
 import com.example.warriorsofhind.screens.FavouriteScreen
 import com.example.warriorsofhind.screens.HomeScreen
+import com.example.warriorsofhind.screens.PagerScreen
 import com.example.warriorsofhind.ui.theme.WarriorsOfHindTheme
 import com.example.warriorsofhind.utils.Details
 import com.example.warriorsofhind.utils.Favourites
 import com.example.warriorsofhind.utils.Home
+import com.example.warriorsofhind.utils.Pager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -68,8 +70,8 @@ fun MyApp(
         },
         bottomBar = {
             BottomBar(
-                onClick = {
-                    navController.navigate(route = Favourites.route)
+                onClick = {arg ->
+                    navController.navigate(arg)
                 }
             )
         }
@@ -101,6 +103,11 @@ fun MyApp(
                     }
                 )
             }
+
+            composable(route = Pager.route) {
+                PagerScreen()
+            }
         }
+
     }
 }
