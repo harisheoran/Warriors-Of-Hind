@@ -10,4 +10,5 @@ The app showcases the great warriors of Hind(currently India).
 - Coil for image loading
 - Material 3
 - MVVM Architecture
+- Hilt for Dependency Injection
 - [Json Bin](https://jsonbin.io/) for backend
