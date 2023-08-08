@@ -152,7 +152,7 @@ fun PagerUI(kingList: List<King>, onClick: (arg: String) -> Unit) {
 
             val showNext by remember {
                 derivedStateOf {
-                    pagerState.currentPage < kingList.size
+                    pagerState.currentPage < kingList.size - 1
                 }
             }
             IconButton(
