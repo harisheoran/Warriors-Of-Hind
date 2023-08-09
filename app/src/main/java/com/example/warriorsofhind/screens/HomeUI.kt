@@ -8,8 +8,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -21,39 +21,38 @@ import com.example.warriorsofhind.R
 import com.example.warriorsofhind.components.HomeCard
 import com.example.warriorsofhind.components.UiStatus
 import com.example.warriorsofhind.models.King
-import com.example.warriorsofhind.network.NetworkStatusWrapper
+import com.example.warriorsofhind.network.ApiResponse
 import com.example.warriorsofhind.viewmodel.WarriorsNameViewModel
 
 @Composable
 fun HomeScreen(onClick: (args: String) -> Unit) {
     val viewModel: WarriorsNameViewModel = hiltViewModel()
-    val names = viewModel.warriorsNameListState.observeAsState()
+   // val names = viewModel.warriorsNameListState.observeAsState()
+
+    val warriors = viewModel.warriorsStateFlow.collectAsState()
+    val apiRes = warriors.value
 
     var selected by rememberSaveable {
         mutableStateOf(false)
     }
 
-    when (val namesList = names.value) {
-        is NetworkStatusWrapper.Success<*> -> {
+
+    when (apiRes.status) {
+
+        // Successfull response
+        is ApiResponse.Status.Success -> {
+
             HomeUI(
                 onClick = onClick,
                 onClickFavourite = {
                     viewModel.saveFavouriteKing(it)
                 },
-                names = namesList!!
+                warriors = apiRes
             )
         }
 
-        is NetworkStatusWrapper.Loading<*> -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                UiStatus(R.raw.loading)
-            }
-        }
-
-        else -> {
+        // Failure Response
+        is ApiResponse.Status.Failure -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -61,14 +60,35 @@ fun HomeScreen(onClick: (args: String) -> Unit) {
                 UiStatus(R.raw.server_error)
             }
         }
+
+        // Loading
+        else -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                UiStatus(R.raw.loading)
+            }
+        }
     }
+
+   /* when (val namesList = names.value) {
+        is NetworkStatusWrapper.Success<*> -> {
+        }
+
+        is NetworkStatusWrapper.Loading<*> -> {
+        }
+
+        else -> {
+        }
+    }*/
 }
 
 @Composable
 fun HomeUI(
     onClick: (args: String) -> Unit,
     onClickFavourite: (favouriteKing: King) -> Unit,
-    names: NetworkStatusWrapper<List<King>>
+    warriors: ApiResponse<List<King>>
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -82,8 +102,8 @@ fun HomeUI(
         verticalArrangement = Arrangement.spacedBy(16.dp)
         //verticalArrangement = Arrangement.SpaceAround,
     ) {
-        val namesList = names?.data ?: emptyList()
-        items(namesList) {
+        val warriorsData = warriors.dataBody
+        items(warriorsData) {
             HomeCard(
                 king = it,
                 onClick = onClick,
