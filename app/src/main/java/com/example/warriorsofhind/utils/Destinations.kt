@@ -1,35 +1,21 @@
 package com.example.warriorsofhind.utils
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.example.warriorsofhind.R
 
-enum class Destinat() {
-
-
-}
-
-
-class Route(val route: String, val label: String)
 
 interface Destinations {
     val route: String
-    val icon: ImageVector
+    val icon: Int
     val label: String
 }
-
 
 object Home : Destinations {
     override val route: String
         get() = "home"
-    override val icon: ImageVector
-        get() = Icons.Filled.Home
-
+    override val icon: Int
+        get() = R.drawable.sword
     override val label: String
         get() = "Warriors Of Hind"
 }
@@ -49,8 +35,8 @@ object Details : Destinations {
         }
     )
 
-    override val icon: ImageVector
-        get() = Icons.Filled.Info
+    override val icon: Int
+        get() = R.drawable.sword
 
     override val label: String
         get() = "Details"
@@ -59,8 +45,8 @@ object Details : Destinations {
 object Favourites : Destinations {
     override val route: String
         get() = "favourites"
-    override val icon: ImageVector
-        get() = Icons.Filled.Favorite
+    override val icon: Int
+        get() = R.drawable.bookmark
 
     override val label: String
         get() = "Favourites"
@@ -69,8 +55,8 @@ object Favourites : Destinations {
 object Pager : Destinations {
     override val route: String
         get() = "pager"
-    override val icon: ImageVector
-        get() = Icons.Filled.Face
+    override val icon: Int
+        get() = R.drawable.view_carousel
 
     override val label: String
         get() = "Pager"

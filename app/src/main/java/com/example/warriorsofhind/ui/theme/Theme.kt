@@ -108,7 +108,6 @@ fun WarriorsOfHindTheme(
         }
     }
 
-
     MaterialTheme(
         colorScheme = colors,
         typography = typography,

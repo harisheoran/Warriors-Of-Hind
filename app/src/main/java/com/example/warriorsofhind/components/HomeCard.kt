@@ -4,15 +4,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.example.warriorsofhind.R
 import com.example.warriorsofhind.models.King
@@ -40,6 +38,7 @@ fun HomeCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
         ),
+        shape = MaterialTheme.shapes.small,
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
@@ -52,16 +51,9 @@ fun HomeCard(
         Column() {
             HomeCardImage(imgUrl = king.img)
             Row() {
-                IconButton(
-                    onClick = {
-                        onClickFavourite(king)
-                    }
-                ) {
-                    Icon(Icons.Outlined.Favorite, contentDescription = null)
-                }
                 Text(
                     text = king.name,
-                    modifier = Modifier.padding(start = 12.dp, top = 12.dp, bottom = 16.dp),
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp,top = 6.dp, bottom = 12.dp),
                     style = MaterialTheme.typography.headlineMedium,
                     color = Color.Black
                 )
@@ -72,15 +64,20 @@ fun HomeCard(
 
 @Composable
 fun HomeCardImage(imgUrl: String) {
-    AsyncImage(
+    SubcomposeAsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(imgUrl)
+            .diskCacheKey("halloween_image_$imgUrl")
             .error(R.drawable.error_img)
             .build(),
         modifier = Modifier
             .width(250.dp)
-            .clip(shape = RoundedCornerShape(size = 12.dp)),
+            .height(320.dp)
+            .clip(shape = RoundedCornerShape(size = 8.dp)),
+        loading = {
+            CircularProgressIndicator()
+        },
         contentScale = ContentScale.Crop,
-        contentDescription = "This is an example image"
+        contentDescription = "Warriors Image"
     )
 }
