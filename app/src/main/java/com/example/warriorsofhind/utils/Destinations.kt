@@ -49,7 +49,7 @@ object Favourites : Destinations {
         get() = R.drawable.bookmark
 
     override val label: String
-        get() = "Favourites"
+        get() = "Bookmarks"
 }
 
 object Pager : Destinations {

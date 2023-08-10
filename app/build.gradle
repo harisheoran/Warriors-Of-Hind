@@ -105,6 +105,16 @@ dependencies {
     // dots indicator
     implementation("com.tbuonomo:dotsindicator:5.0")
 
+    // Chucker
+    debugImplementation "com.github.chuckerteam.chucker:library:4.0.0"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:4.0.0"
+
+    // OkHttp
+    implementation "com.squareup.okhttp3:logging-interceptor:4.11.0"
+
+    // Leak Canary
+    // debugImplementation because LeakCanary should only run in debug builds.
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
 }
 
 kapt {
