@@ -22,6 +22,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -42,7 +43,7 @@ import coil.request.ImageRequest
 import com.example.warriorsofhind.R
 import com.example.warriorsofhind.components.UiStatus
 import com.example.warriorsofhind.models.King
-import com.example.warriorsofhind.network.NetworkStatusWrapper
+import com.example.warriorsofhind.network.ApiResponse
 import com.example.warriorsofhind.viewmodel.WarriorsNameViewModel
 import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
@@ -54,25 +55,22 @@ fun PagerScreen(modifier: Modifier = Modifier, onClick: (arg: String) -> Unit) {
     val viewModel: WarriorsNameViewModel = hiltViewModel()
     val responseState = viewModel.warriorsNameListState.observeAsState()
 
+    val warriorsState = viewModel.warriorsStateFlow.collectAsState()
+    var warriors = warriorsState.value
 
-    when (responseState.value) {
-        is NetworkStatusWrapper.Success<*> -> {
-            val kingList = responseState.value?.data
-            if (kingList != null) {
-                PagerUI(kingList, onClick = onClick)
+    when (warriors.status) {
+
+        // Successfull response
+        is ApiResponse.Status.Success -> {
+
+            if (warriors != null) {
+                PagerUI(warriors.dataBody, onClick = onClick)
             }
+
         }
 
-        is NetworkStatusWrapper.Loading<*> -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                UiStatus(R.raw.loading)
-            }
-        }
-
-        else -> {
+        // Failure Response
+        is ApiResponse.Status.Failure -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -81,7 +79,17 @@ fun PagerScreen(modifier: Modifier = Modifier, onClick: (arg: String) -> Unit) {
             }
         }
 
+        // Loading
+        else -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                UiStatus(R.raw.loading)
+            }
+        }
     }
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -105,9 +113,11 @@ fun PagerUI(kingList: List<King>, onClick: (arg: String) -> Unit) {
                 pageCount = pageCount,
                 modifier = Modifier.fillMaxSize()
             ) { currentPage ->
-                Box(modifier = Modifier.fillMaxSize().clickable {
-                    onClick(kingList[currentPage].name)
-                }) {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .clickable {
+                        onClick(kingList[currentPage].name)
+                    }) {
                     PagerUIImage(imgUrl = kingList[currentPage].img)
                     Text(
                         text = kingList[currentPage].name,
@@ -134,7 +144,6 @@ fun PagerUI(kingList: List<King>, onClick: (arg: String) -> Unit) {
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Spacer(modifier = Modifier.height(16.dp))
-
 
         Row(
             modifier = Modifier
