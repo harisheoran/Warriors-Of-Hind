@@ -22,7 +22,8 @@ class WarriorsRepository @Inject constructor(
     private val warriorDataBase: WarriorDataBase,
     private val apiClient: ApiClient
 ) {
-
+    // 01. Warriors Data (FOR HOME SCREEN)
+    // State Flow for Home Screen Warrior response from network
     private val _warriorsStateFlow = MutableStateFlow<ApiResponse<List<King>>>(
         ApiResponse(
             status = ApiResponse.Status.Loading,
@@ -35,8 +36,7 @@ class WarriorsRepository @Inject constructor(
 
     suspend fun getWarriors(query: String) {
         val request = apiClient.getWarriors(query)
-
-        if (request == null && request.isFailed) {
+        if (request.isFailed || !request.isSucceed) {
             _warriorsStateFlow.emit(
                 ApiResponse(
                     status = ApiResponse.Status.Failure,
@@ -46,6 +46,35 @@ class WarriorsRepository @Inject constructor(
             )
         } else {
             _warriorsStateFlow.emit(
+                request
+            )
+        }
+    }
+
+    // 02. Warriors Details (FOR DETAILS SCREEN)
+    private val _warriorsDetailsStateFlow = MutableStateFlow<ApiResponse<List<WarriorsItem>>>(
+        ApiResponse(
+            status = ApiResponse.Status.Loading,
+            data = null,
+            exception = null
+        )
+    )
+    val warriorDetailsStateFlow: StateFlow<ApiResponse<List<WarriorsItem>>>
+        get() = _warriorsDetailsStateFlow
+
+    suspend fun getWarriorsDetails(query: String) {
+        val request = apiClient.getWarriorsDetails("data[?(@.name==\"${query}\")]")
+
+        if (request.isFailed || !request.isSucceed) {
+            _warriorsDetailsStateFlow.emit(
+                ApiResponse(
+                    status = ApiResponse.Status.Failure,
+                    data = null,
+                    exception = Exception()
+                )
+            )
+        } else {
+            _warriorsDetailsStateFlow.emit(
                 request
             )
         }
@@ -78,23 +107,23 @@ class WarriorsRepository @Inject constructor(
     val data: LiveData<NetworkStatusWrapper<List<WarriorsItem>>>
         get() = _data
 
-    suspend fun getWarriorsData(query: String) {
-        try {
-            _data.postValue(NetworkStatusWrapper.Loading())
-            val request = warriorService.getWarriorsDetails("data[?(@.name==\"${query}\")]")
+    /* suspend fun getWarriorsData(query: String) {
+         try {
+             _data.postValue(NetworkStatusWrapper.Loading())
+             val request = warriorService.getWarriorsDetails("data[?(@.name==\"${query}\")]")
 
-            if (request.isSuccessful && request.body() != null) {
-                _data.postValue(NetworkStatusWrapper.Success(request.body()!!))
-            } else if (request.errorBody() != null) {
-                _data.postValue(NetworkStatusWrapper.Failure("Error"))
-            } else {
-                _data.postValue(NetworkStatusWrapper.Failure())
-            }
-        } catch (e: Exception) {
-            _data.postValue(NetworkStatusWrapper.Failure())
+             if (request.isSuccessful && request.body() != null) {
+                 _data.postValue(NetworkStatusWrapper.Success(request.body()!!))
+             } else if (request.errorBody() != null) {
+                 _data.postValue(NetworkStatusWrapper.Failure("Error"))
+             } else {
+                 _data.postValue(NetworkStatusWrapper.Failure())
+             }
+         } catch (e: Exception) {
+             _data.postValue(NetworkStatusWrapper.Failure())
 
-        }
-    }
+         }
+     }*/
 
 
     private val _favourites = MutableLiveData<List<King>>()

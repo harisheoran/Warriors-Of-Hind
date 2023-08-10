@@ -29,8 +29,8 @@ fun HomeScreen(onClick: (args: String) -> Unit) {
     val viewModel: WarriorsNameViewModel = hiltViewModel()
    // val names = viewModel.warriorsNameListState.observeAsState()
 
-    val warriors = viewModel.warriorsStateFlow.collectAsState()
-    val apiRes = warriors.value
+    val warriorsState = viewModel.warriorsStateFlow.collectAsState()
+    val apiRes = warriorsState.value
 
     var selected by rememberSaveable {
         mutableStateOf(false)

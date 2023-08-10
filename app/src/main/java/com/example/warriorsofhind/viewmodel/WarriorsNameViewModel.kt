@@ -18,6 +18,7 @@ import javax.inject.Inject
 class WarriorsNameViewModel @Inject constructor(private val repository: WarriorsRepository) :
     ViewModel() {
 
+    // State Flow for Home Screen Warrior response from Repository
     val warriorsStateFlow: StateFlow<ApiResponse<List<King>>>
         get() = repository.warriorsStateFlow
 
@@ -31,6 +32,7 @@ class WarriorsNameViewModel @Inject constructor(private val repository: Warriors
         loadWarriorsNames("$.kings[*]")
     }
 
+    // loading Warriors Home Screen Data by passing the query
     fun loadWarriorsNames(query: String) {
         viewModelScope.launch {
             repository.getWarriors(query)

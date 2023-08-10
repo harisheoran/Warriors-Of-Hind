@@ -25,6 +25,7 @@ data class ApiResponse<T>(
     val bodyNullable: T?
         get() = this.data?.body()!!
 
+    // Companion Object - access methods using class name without creating an instance of it
     companion object {
         fun <T> successResponse(data: Response<T>): ApiResponse<T> {
             return ApiResponse(
