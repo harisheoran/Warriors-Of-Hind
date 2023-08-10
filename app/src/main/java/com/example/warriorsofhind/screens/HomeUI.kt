@@ -72,16 +72,6 @@ fun HomeScreen(onClick: (args: String) -> Unit) {
         }
     }
 
-   /* when (val namesList = names.value) {
-        is NetworkStatusWrapper.Success<*> -> {
-        }
-
-        is NetworkStatusWrapper.Loading<*> -> {
-        }
-
-        else -> {
-        }
-    }*/
 }
 
 @Composable
@@ -100,7 +90,6 @@ fun HomeUI(
         ),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
-        //verticalArrangement = Arrangement.SpaceAround,
     ) {
         val warriorsData = warriors.dataBody
         items(warriorsData) {
