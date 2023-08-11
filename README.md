@@ -11,4 +11,6 @@ The app showcases the great warriors of Hind(currently India).
 - Material 3
 - MVVM Architecture
 - Hilt for Dependency Injection
+- OkHttp and Chucker for network debugging
+- Leak Canary for memory leak check
 - [Json Bin](https://jsonbin.io/) for backend

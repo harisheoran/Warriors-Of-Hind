@@ -29,9 +29,9 @@ import com.example.warriorsofhind.models.King
 @Composable
 fun HomeCard(
     king: King,
-    onClick: (args: String) -> Unit,
+    onClick: (args: String, img: String) -> Unit,
     onClickFavourite: (favouriteKing: King) -> Unit,
-    ) {
+) {
     // Create a Composable state wrapper for isFavorite
     var isFavouriteState = rememberUpdatedState(king.isFavourite)
     Card(
@@ -42,7 +42,7 @@ fun HomeCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onClick(king.name)
+                onClick(king.name, king.img)
             },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -53,7 +53,12 @@ fun HomeCard(
             Row() {
                 Text(
                     text = king.name,
-                    modifier = Modifier.padding(start = 8.dp, end = 8.dp,top = 6.dp, bottom = 12.dp),
+                    modifier = Modifier.padding(
+                        start = 8.dp,
+                        end = 8.dp,
+                        top = 6.dp,
+                        bottom = 12.dp
+                    ),
                     style = MaterialTheme.typography.headlineMedium,
                     color = Color.Black
                 )

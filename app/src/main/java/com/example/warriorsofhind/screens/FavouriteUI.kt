@@ -10,7 +10,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.warriorsofhind.components.HomeCard
 import com.example.warriorsofhind.viewmodel.WarriorsNameViewModel
 
 @Composable
@@ -32,11 +31,6 @@ fun FavouriteScreen(modifier: Modifier = Modifier, onClick: (arg: String) -> Uni
     ) {
         val favouriteList = favouritesState.value ?: emptyList()
         items(favouriteList) { king ->
-            HomeCard(
-                king = king,
-                onClick = { onClick(king.name) },
-                onClickFavourite = {}
-            )
         }
     }
 

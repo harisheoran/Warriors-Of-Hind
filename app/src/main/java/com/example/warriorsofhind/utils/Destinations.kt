@@ -27,10 +27,15 @@ object Details : Destinations {
 
     val arg: String = "kingName"
 
-    val argWithRoute = "${route}/{${arg}}"
+    val imgUrl: String = "img"
+
+    val argWithRoute = "${Details.route}?kingName={${arg}},img={${imgUrl}}"
 
     val argument = listOf(
         navArgument(name = Details.arg) {
+            type = NavType.StringType
+        },
+        navArgument(name = Details.imgUrl) {
             type = NavType.StringType
         }
     )

@@ -25,9 +25,9 @@ import com.example.warriorsofhind.network.ApiResponse
 import com.example.warriorsofhind.viewmodel.WarriorsNameViewModel
 
 @Composable
-fun HomeScreen(onClick: (args: String) -> Unit) {
+fun HomeScreen(onClick: (args: String, img: String) -> Unit) {
     val viewModel: WarriorsNameViewModel = hiltViewModel()
-   // val names = viewModel.warriorsNameListState.observeAsState()
+    // val names = viewModel.warriorsNameListState.observeAsState()
 
     val warriorsState = viewModel.warriorsStateFlow.collectAsState()
     val apiRes = warriorsState.value
@@ -76,7 +76,7 @@ fun HomeScreen(onClick: (args: String) -> Unit) {
 
 @Composable
 fun HomeUI(
-    onClick: (args: String) -> Unit,
+    onClick: (args: String, img: String) -> Unit,
     onClickFavourite: (favouriteKing: King) -> Unit,
     warriors: ApiResponse<List<King>>
 ) {

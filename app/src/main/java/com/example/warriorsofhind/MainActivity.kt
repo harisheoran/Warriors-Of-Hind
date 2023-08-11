@@ -61,14 +61,14 @@ fun MyApp(
 ) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = backStackEntry?.arguments?.getString("kingName") ?: Home.label
+    //  val currentScreen = backStackEntry?.arguments?.getString("kingName") ?: Home.label
     val currentRoute = backStackEntry?.destination?.route
     val items = listOf<Destinations>(Home, Favourites, Pager)
 
     Scaffold(
         topBar = {
             MyAppBar(
-                currentScreen = currentScreen,
+                //  currentScreen = currentScreen,
                 canNavigateUp = navController.previousBackStackEntry != null
             ) { navController.navigateUp() }
         },
@@ -95,19 +95,26 @@ fun MyApp(
             startDestination = Home.route,
             modifier = modifier.padding(it)
         ) {
+            // Home Screen
             composable(route = Home.route) {
-                HomeScreen() { arg ->
-                    navController.navigate("${Details.route}/$arg") {
+                HomeScreen() { arg, img ->
+                    navController.navigate(
+                        "${Details.route}?kingName=${arg},img=${img}"
+                    ) {
                         launchSingleTop = true
                     }
                 }
             }
 
+            // Details Screen
             composable(
                 route = Details.argWithRoute,
                 arguments = Details.argument
             ) {
-                DetailsMainScreen()
+                val arguments = requireNotNull(it.arguments)
+                val img = arguments.getString(Details.imgUrl)
+                    ?: "https://i.pinimg.com/originals/fa/0a/29/fa0a2998e72b207925e63f3152cbda2a.jpg"
+                DetailsMainScreen(imgUrl = img)
             }
 
             composable(route = Favourites.route) {
@@ -132,6 +139,5 @@ fun MyApp(
                 )
             }
         }
-
     }
 }
