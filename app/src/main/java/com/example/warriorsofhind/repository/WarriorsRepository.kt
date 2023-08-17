@@ -5,23 +5,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import com.example.warriorsofhind.database.WarriorDataBase
 import com.example.warriorsofhind.domain.asDataBaseModel
-import com.example.warriorsofhind.domain.asDomainModel
+import com.example.warriorsofhind.domain.asDomainsModel
 import com.example.warriorsofhind.models.King
 import com.example.warriorsofhind.models.WarriorsItem
 import com.example.warriorsofhind.network.ApiClient
 import com.example.warriorsofhind.network.ApiResponse
 import com.example.warriorsofhind.network.NetworkStatusWrapper
-import com.example.warriorsofhind.network.WarriorService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 
 class WarriorsRepository @Inject constructor(
-    private val warriorService: WarriorService,
     private val warriorDataBase: WarriorDataBase,
     private val apiClient: ApiClient
 ) {
+
+
     // 01. Warriors Data (FOR HOME SCREEN)
     // State Flow for Home Screen Warrior response from network
     private val _warriorsStateFlow = MutableStateFlow<ApiResponse<List<King>>>(
@@ -45,6 +45,10 @@ class WarriorsRepository @Inject constructor(
                 )
             )
         } else {
+
+        /*    withContext(Dispatchers.IO) {
+                warriorDataBase.warriorDao().insertWarriors(request.asDataBaseModel())
+            }*/
             _warriorsStateFlow.emit(
                 request
             )
@@ -129,7 +133,7 @@ class WarriorsRepository @Inject constructor(
     private val _favourites = MutableLiveData<List<King>>()
     val favourites: LiveData<List<King>>
         get() = warriorDataBase.favouriteDao().queryWarriors().map {
-            it.asDomainModel()
+            it.asDomainsModel()
         }
 
     suspend fun saveFavourite(favouriteKing: King) {

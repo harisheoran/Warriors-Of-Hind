@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun MyAppBar(
     modifier: Modifier = Modifier,
-   // currentScreen: String,
+    //currentScreen: String,
     canNavigateUp: Boolean,
     navigateUp: () -> Unit
 ) {

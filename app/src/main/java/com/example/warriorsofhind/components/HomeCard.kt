@@ -14,7 +14,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -33,7 +32,7 @@ fun HomeCard(
     onClickFavourite: (favouriteKing: King) -> Unit,
 ) {
     // Create a Composable state wrapper for isFavorite
-    var isFavouriteState = rememberUpdatedState(king.isFavourite)
+   // var isFavouriteState = rememberUpdatedState(king.isFavourite)
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
