@@ -16,14 +16,18 @@ import androidx.compose.ui.Modifier
 @Composable
 fun MyAppBar(
     modifier: Modifier = Modifier,
-    currentScreen: CharSequence,
+    //currentScreen: String,
     canNavigateUp: Boolean,
     navigateUp: () -> Unit
 ) {
     TopAppBar(
         title = {
             Text(
-                text = currentScreen.toString(),
+                text = if (canNavigateUp) {
+                    ""
+                } else {
+                    "Warriors Of Hind"
+                },
                 style = MaterialTheme.typography.headlineMedium
             )
         },
@@ -36,7 +40,7 @@ fun MyAppBar(
             }
         },
         colors = topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+
         )
     )
 }

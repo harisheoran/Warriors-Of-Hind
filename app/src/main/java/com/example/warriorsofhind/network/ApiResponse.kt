@@ -42,6 +42,6 @@ data class ApiResponse<T>(
                 exception = exception
             )
         }
-    }
 
+    }
 }

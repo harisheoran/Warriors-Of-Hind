@@ -17,7 +17,7 @@ object Home : Destinations {
     override val icon: Int
         get() = R.drawable.sword
     override val label: String
-        get() = "Warriors Of Hind"
+        get() = "Warriors"
 }
 
 object Details : Destinations {
@@ -27,10 +27,15 @@ object Details : Destinations {
 
     val arg: String = "kingName"
 
-    val argWithRoute = "${route}/{${arg}}"
+    val imgUrl: String = "img"
+
+    val argWithRoute = "${Details.route}?kingName={${arg}},img={${imgUrl}}"
 
     val argument = listOf(
         navArgument(name = Details.arg) {
+            type = NavType.StringType
+        },
+        navArgument(name = Details.imgUrl) {
             type = NavType.StringType
         }
     )
@@ -52,13 +57,34 @@ object Favourites : Destinations {
         get() = "Bookmarks"
 }
 
-object Pager : Destinations {
+
+
+object WallpaperRoute : Destinations {
     override val route: String
-        get() = "pager"
+        get() = "wallpaper"
     override val icon: Int
-        get() = R.drawable.view_carousel
-
+        get() = R.drawable.wallpaper
     override val label: String
-        get() = "Pager"
+        get() = "Wallpaper"
+}
 
+object WallpaperView : Destinations {
+
+    override val route: String
+        get() = "wallview"
+    override val icon: Int
+        get() = R.drawable.wallpaper
+    override val label: String
+        get() = ""
+
+    val argOne: String = "img"
+
+    val argWithRoute =
+        "${route}/{${argOne}}"
+
+    val argument = listOf(
+        navArgument(name = WallpaperView.argOne) {
+            type = NavType.StringType
+        },
+    )
 }

@@ -25,9 +25,9 @@ import com.example.warriorsofhind.network.ApiResponse
 import com.example.warriorsofhind.viewmodel.WarriorsNameViewModel
 
 @Composable
-fun HomeScreen(onClick: (args: String) -> Unit) {
+fun HomeScreen(onClick: (args: String, img: String) -> Unit) {
     val viewModel: WarriorsNameViewModel = hiltViewModel()
-   // val names = viewModel.warriorsNameListState.observeAsState()
+    // val names = viewModel.warriorsNameListState.observeAsState()
 
     val warriorsState = viewModel.warriorsStateFlow.collectAsState()
     val apiRes = warriorsState.value
@@ -76,16 +76,16 @@ fun HomeScreen(onClick: (args: String) -> Unit) {
 
 @Composable
 fun HomeUI(
-    onClick: (args: String) -> Unit,
+    onClick: (args: String, img: String) -> Unit,
     onClickFavourite: (favouriteKing: King) -> Unit,
     warriors: ApiResponse<List<King>>
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(1),
         contentPadding = PaddingValues(
-            start = 12.dp,
+            start = 16.dp,
             top = 16.dp,
-            end = 12.dp,
+            end = 16.dp,
             bottom = 16.dp
         ),
         horizontalArrangement = Arrangement.spacedBy(16.dp),

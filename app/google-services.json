@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "381035013865",
+    "project_id": "warriorsofhind",
+    "storage_bucket": "warriorsofhind.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381035013865:android:33bb37f124d4f69155b278",
+        "android_client_info": {
+          "package_name": "com.example.warriorsofhind"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "381035013865-s0mc6iisana1b15vprr4083h8b4rccj5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQNfYxMUw5e53Qxu_MBknYdA8t4KmUFDg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "381035013865-s0mc6iisana1b15vprr4083h8b4rccj5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

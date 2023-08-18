@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -14,7 +13,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -29,11 +27,11 @@ import com.example.warriorsofhind.models.King
 @Composable
 fun HomeCard(
     king: King,
-    onClick: (args: String) -> Unit,
+    onClick: (args: String, img: String) -> Unit,
     onClickFavourite: (favouriteKing: King) -> Unit,
-    ) {
+) {
     // Create a Composable state wrapper for isFavorite
-    var isFavouriteState = rememberUpdatedState(king.isFavourite)
+   // var isFavouriteState = rememberUpdatedState(king.isFavourite)
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
@@ -42,8 +40,9 @@ fun HomeCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onClick(king.name)
-            },
+                onClick(king.name, king.img)
+            }
+            .clip(RoundedCornerShape(8.dp)),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         )
@@ -53,8 +52,26 @@ fun HomeCard(
             Row() {
                 Text(
                     text = king.name,
-                    modifier = Modifier.padding(start = 8.dp, end = 8.dp,top = 6.dp, bottom = 12.dp),
+                    modifier = Modifier.padding(
+                        start = 8.dp,
+                        end = 8.dp,
+                        top = 6.dp,
+                        bottom = 12.dp
+                    ),
                     style = MaterialTheme.typography.headlineMedium,
+                    color = Color.Black
+                )
+            }
+            Row {
+                Text(
+                    text = king.intro ?: "data not available...",
+                    modifier = Modifier.padding(
+                        start = 8.dp,
+                        end = 8.dp,
+                        top = 6.dp,
+                        bottom = 12.dp
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = Color.Black
                 )
             }
@@ -71,9 +88,8 @@ fun HomeCardImage(imgUrl: String) {
             .error(R.drawable.error_img)
             .build(),
         modifier = Modifier
-            .width(250.dp)
-            .height(320.dp)
-            .clip(shape = RoundedCornerShape(size = 8.dp)),
+            .fillMaxWidth()
+            .height(200.dp),
         loading = {
             CircularProgressIndicator()
         },

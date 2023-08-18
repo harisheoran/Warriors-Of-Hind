@@ -21,13 +21,15 @@ import com.example.warriorsofhind.components.MyAppBar
 import com.example.warriorsofhind.screens.DetailsMainScreen
 import com.example.warriorsofhind.screens.FavouriteScreen
 import com.example.warriorsofhind.screens.HomeScreen
-import com.example.warriorsofhind.screens.PagerScreen
+import com.example.warriorsofhind.screens.WallpaperScreen
+import com.example.warriorsofhind.screens.WallpaperViewScreen
 import com.example.warriorsofhind.ui.theme.WarriorsOfHindTheme
 import com.example.warriorsofhind.utils.Destinations
 import com.example.warriorsofhind.utils.Details
 import com.example.warriorsofhind.utils.Favourites
 import com.example.warriorsofhind.utils.Home
-import com.example.warriorsofhind.utils.Pager
+import com.example.warriorsofhind.utils.WallpaperRoute
+import com.example.warriorsofhind.utils.WallpaperView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,11 +51,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-enum class LunchTrayScreen(val title: String) {
-    Start(title = "Home"),
-    Entree(title = "Jassa"),
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyApp(
@@ -61,14 +58,14 @@ fun MyApp(
 ) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = backStackEntry?.arguments?.getString("kingName") ?: Home.label
+    //  val currentScreen = backStackEntry?.arguments?.getString("kingName") ?: Home.label
     val currentRoute = backStackEntry?.destination?.route
-    val items = listOf<Destinations>(Home, Favourites, Pager)
+    val items = listOf<Destinations>(Home, Favourites, WallpaperRoute)
 
     Scaffold(
         topBar = {
             MyAppBar(
-                currentScreen = currentScreen,
+                //  currentScreen = currentScreen,
                 canNavigateUp = navController.previousBackStackEntry != null
             ) { navController.navigateUp() }
         },
@@ -95,19 +92,26 @@ fun MyApp(
             startDestination = Home.route,
             modifier = modifier.padding(it)
         ) {
+            // Home Screen
             composable(route = Home.route) {
-                HomeScreen() { arg ->
-                    navController.navigate("${Details.route}/$arg") {
+                HomeScreen() { arg, img ->
+                    navController.navigate(
+                        "${Details.route}?kingName=${arg},img=${img}"
+                    ) {
                         launchSingleTop = true
                     }
                 }
             }
 
+            // Details Screen
             composable(
                 route = Details.argWithRoute,
                 arguments = Details.argument
             ) {
-                DetailsMainScreen()
+                val arguments = requireNotNull(it.arguments)
+                val img = arguments.getString(Details.imgUrl)
+                    ?: "https://i.pinimg.com/originals/fa/0a/29/fa0a2998e72b207925e63f3152cbda2a.jpg"
+                DetailsMainScreen(imgUrl = img)
             }
 
             composable(route = Favourites.route) {
@@ -121,17 +125,23 @@ fun MyApp(
                 )
             }
 
-            composable(route = Pager.route) {
-                PagerScreen(
-                    onClick = { arg ->
-                        navController.navigate("${Details.route}/$arg") {
+            composable(route = WallpaperRoute.route) {
+                WallpaperScreen(
+                    onClick = { img ->
+                        navController.navigate("${WallpaperView.route}/$img") {
                             launchSingleTop = true
-
                         }
                     }
                 )
             }
-        }
 
+            composable(
+                route = WallpaperView.argWithRoute,
+                arguments = WallpaperView.argument
+            ) {
+
+                WallpaperViewScreen(img = "https://i.imgur.com/Hg2chMP.jpg")
+            }
+        }
     }
 }
