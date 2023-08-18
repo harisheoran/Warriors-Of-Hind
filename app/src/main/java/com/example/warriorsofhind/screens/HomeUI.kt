@@ -81,11 +81,11 @@ fun HomeUI(
     warriors: ApiResponse<List<King>>
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(1),
         contentPadding = PaddingValues(
-            start = 12.dp,
+            start = 16.dp,
             top = 16.dp,
-            end = 12.dp,
+            end = 16.dp,
             bottom = 16.dp
         ),
         horizontalArrangement = Arrangement.spacedBy(16.dp),

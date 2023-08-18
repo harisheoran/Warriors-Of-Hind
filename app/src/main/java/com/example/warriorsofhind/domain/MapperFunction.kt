@@ -35,7 +35,8 @@ fun List<FavouriteEntity>.asDomainsModel(): List<King> {
         King(
             name = it.name,
             img = it.img,
-            Id = 0
+            Id = 0,
+            intro = ""
         )
     }
 }

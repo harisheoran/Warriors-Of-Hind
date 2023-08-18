@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -42,7 +41,8 @@ fun HomeCard(
             .fillMaxWidth()
             .clickable {
                 onClick(king.name, king.img)
-            },
+            }
+            .clip(RoundedCornerShape(8.dp)),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         )
@@ -62,6 +62,19 @@ fun HomeCard(
                     color = Color.Black
                 )
             }
+            Row {
+                Text(
+                    text = king.intro ?: "data not available...",
+                    modifier = Modifier.padding(
+                        start = 8.dp,
+                        end = 8.dp,
+                        top = 6.dp,
+                        bottom = 12.dp
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Black
+                )
+            }
         }
     }
 }
@@ -75,9 +88,8 @@ fun HomeCardImage(imgUrl: String) {
             .error(R.drawable.error_img)
             .build(),
         modifier = Modifier
-            .width(250.dp)
-            .height(320.dp)
-            .clip(shape = RoundedCornerShape(size = 8.dp)),
+            .fillMaxWidth()
+            .height(200.dp),
         loading = {
             CircularProgressIndicator()
         },

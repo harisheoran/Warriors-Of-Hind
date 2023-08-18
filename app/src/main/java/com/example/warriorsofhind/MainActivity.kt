@@ -21,7 +21,6 @@ import com.example.warriorsofhind.components.MyAppBar
 import com.example.warriorsofhind.screens.DetailsMainScreen
 import com.example.warriorsofhind.screens.FavouriteScreen
 import com.example.warriorsofhind.screens.HomeScreen
-import com.example.warriorsofhind.screens.PagerScreen
 import com.example.warriorsofhind.screens.WallpaperScreen
 import com.example.warriorsofhind.screens.WallpaperViewScreen
 import com.example.warriorsofhind.ui.theme.WarriorsOfHindTheme
@@ -29,7 +28,6 @@ import com.example.warriorsofhind.utils.Destinations
 import com.example.warriorsofhind.utils.Details
 import com.example.warriorsofhind.utils.Favourites
 import com.example.warriorsofhind.utils.Home
-import com.example.warriorsofhind.utils.Pager
 import com.example.warriorsofhind.utils.WallpaperRoute
 import com.example.warriorsofhind.utils.WallpaperView
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,7 +60,7 @@ fun MyApp(
     val backStackEntry by navController.currentBackStackEntryAsState()
     //  val currentScreen = backStackEntry?.arguments?.getString("kingName") ?: Home.label
     val currentRoute = backStackEntry?.destination?.route
-    val items = listOf<Destinations>(Home, Favourites, Pager, WallpaperRoute)
+    val items = listOf<Destinations>(Home, Favourites, WallpaperRoute)
 
     Scaffold(
         topBar = {
@@ -127,30 +125,22 @@ fun MyApp(
                 )
             }
 
-            composable(route = Pager.route) {
-                PagerScreen(
-                    onClick = { arg ->
-                        navController.navigate("${Details.route}/$arg") {
+            composable(route = WallpaperRoute.route) {
+                WallpaperScreen(
+                    onClick = { img ->
+                        navController.navigate("${WallpaperView.route}/$img") {
                             launchSingleTop = true
-
                         }
                     }
                 )
             }
 
-            composable(route = WallpaperRoute.route) {
-                WallpaperScreen(
-                    onClick = { argOne, argTwo ->
-                        navController.navigate("${WallpaperView.route}?img=${argOne},name=${argTwo}")
-                    }
-                )
-            }
+            composable(
+                route = WallpaperView.argWithRoute,
+                arguments = WallpaperView.argument
+            ) {
 
-            composable(route = WallpaperView.argWithRoute) {
-                val arguments = requireNotNull(it.arguments)
-                val img = arguments.getString("img") ?: ""
-                val name = arguments.getString("name") ?: ""
-                WallpaperViewScreen(img, name)
+                WallpaperViewScreen(img = "https://i.imgur.com/Hg2chMP.jpg")
             }
         }
     }

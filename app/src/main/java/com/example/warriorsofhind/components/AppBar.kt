@@ -40,7 +40,7 @@ fun MyAppBar(
             }
         },
         colors = topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+
         )
     )
 }

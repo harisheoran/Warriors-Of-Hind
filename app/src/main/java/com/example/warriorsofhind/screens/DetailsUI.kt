@@ -62,8 +62,8 @@ fun DetailsMainScreen(imgUrl: String) {
         is ApiResponse.Status.Failure -> {
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.primaryContainer),
+                    .fillMaxSize(),
+
                 contentAlignment = Alignment.Center
             ) {
                 UiStatus(lottieFile = R.raw.server_error)
@@ -74,8 +74,8 @@ fun DetailsMainScreen(imgUrl: String) {
         else -> {
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.primaryContainer),
+                    .fillMaxSize(),
+
                 contentAlignment = Alignment.TopCenter
             ) {
                 UiStatus(lottieFile = R.raw.loading_ui2)
@@ -91,28 +91,24 @@ fun DetailsUI(data: List<WarriorsItem>, imgUrl: String) {
         mutableStateOf(false)
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primaryContainer)
-    ) {
-        LazyColumn(
-            content = {
-                items(data) {
-                    DetailsHeader(it, isBookmarked, onClick = {
-                        isBookmarked = !isBookmarked
-                    })
-                    Row() {
-                        DetailsSamllInfoCard(info = it.tribe)
-                        DetailsSamllInfoCard(info = it.period)
-                    }
-                    DetailsImage(imgUrl = imgUrl)
-                    DetailsText(about = it.about)
+
+    LazyColumn(
+        content = {
+            items(data) {
+                DetailsHeader(it, isBookmarked, onClick = {
+                    isBookmarked = !isBookmarked
+                })
+                Row() {
+                    DetailsSamllInfoCard(info = it.tribe)
+                    DetailsSamllInfoCard(info = it.period)
                 }
+                DetailsImage(imgUrl = imgUrl)
+                DetailsText(about = it.about)
             }
-        )
-    }
+        }
+    )
 }
+
 
 @Composable
 fun DetailsHeader(data: WarriorsItem, isBookmarked: Boolean, onClick: () -> Unit) {

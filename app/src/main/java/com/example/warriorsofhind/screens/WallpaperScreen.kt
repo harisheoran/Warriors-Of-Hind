@@ -32,7 +32,7 @@ import com.example.warriorsofhind.firebase.STATUS
 import com.example.warriorsofhind.models.Wallpaper
 
 @Composable
-fun WallpaperScreen(onClick: (img: String, name: String) -> Unit) {
+fun WallpaperScreen(onClick: (img: String) -> Unit) {
     val viewModel: FirebaseViewModel = hiltViewModel()
     val wallpapers = viewModel.wallpaper.observeAsState()
     val wallpapersList = wallpapers.value
@@ -73,7 +73,7 @@ fun WallpaperScreen(onClick: (img: String, name: String) -> Unit) {
 
 
 @Composable
-fun WallpaperUI(wallpaper: List<Wallpaper>?, onClick: (img: String, name: String) -> Unit) {
+fun WallpaperUI(wallpaper: List<Wallpaper>?, onClick: (img: String) -> Unit) {
     if (wallpaper != null) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
@@ -95,7 +95,7 @@ fun WallpaperUI(wallpaper: List<Wallpaper>?, onClick: (img: String, name: String
 
 
 @Composable
-fun WallpaperCardImage(wallpaper: Wallpaper, onClick: (img: String, name: String) -> Unit) {
+fun WallpaperCardImage(wallpaper: Wallpaper, onClick: (img: String) -> Unit) {
     SubcomposeAsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(wallpaper.img)
@@ -107,7 +107,7 @@ fun WallpaperCardImage(wallpaper: Wallpaper, onClick: (img: String, name: String
             .height(320.dp)
             .clip(shape = RoundedCornerShape(size = 8.dp))
             .clickable {
-                onClick(wallpaper.img!!, wallpaper.name!!)
+                onClick(wallpaper.img!!)
             },
         loading = {
             CircularProgressIndicator()
